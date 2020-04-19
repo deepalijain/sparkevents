@@ -1,5 +1,6 @@
 package com.example.spark;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -119,5 +120,9 @@ public class ScrollingActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void switchToEventPage(View view) {
+        Intent i = new Intent(ScrollingActivity.this, EventActivity.class);
+        startActivity(i);
+    }
 
 }
