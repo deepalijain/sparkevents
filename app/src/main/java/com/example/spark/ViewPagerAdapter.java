@@ -19,6 +19,11 @@ public class ViewPagerAdapter extends PagerAdapter
     public ViewPagerAdapter(Context context) {
         this.context = context;
     }
+
+    public ViewPagerAdapter(Context context, Integer[] images) {
+        this.context = context;
+        this.images = images;
+    }
     @Override
     public int getCount() {
         return images.length;

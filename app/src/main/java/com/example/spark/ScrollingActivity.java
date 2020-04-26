@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -24,12 +25,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class ScrollingActivity extends AppCompatActivity {
+public class ScrollingActivity extends AppCompatActivity implements RecyclerAdapter.OnEventItemListener {
     ViewPager viewPager;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ArrayList<Event> eventList;
+    private ArrayList<Event> mEventList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,29 +46,46 @@ public class ScrollingActivity extends AppCompatActivity {
 
         viewPager.setAdapter(viewPagerAdapter);
 
-        eventList = new ArrayList<>();
+        mEventList = new ArrayList<>();
         //just example image array lists
-        ArrayList<ArrayList<Integer>> imageExamples = new ArrayList<>();
-        ArrayList<Integer> example1 = new ArrayList<>();
-        ArrayList<Integer> example2 = new ArrayList<>();
-        ArrayList<Integer> example3 = new ArrayList<>();
-        example1.add(R.drawable.img1);
-        example2.add(R.drawable.img2);
-        example3.add(R.drawable.img3);
-        imageExamples.add(example1);
-        imageExamples.add(example2);
-        imageExamples.add(example3);
-        for (int i = 1; i < 21; i += 1) {
-            eventList.add(new Event("Event " + i, "Example event " + i,
-                    new GregorianCalendar(), "Place " + i, "John Doe", i,
-                    imageExamples.get(i % 3)));
-        }
-        Event.sortByRecommendation(eventList);
+        ArrayList<Integer> concertImages = new ArrayList<>();
+        concertImages.add(R.drawable.concert1);
+        concertImages.add(R.drawable.concert2);
+        concertImages.add(R.drawable.concert3);
+        ArrayList<Integer> festivalImages = new ArrayList<>();
+        festivalImages.add(R.drawable.festival1);
+        festivalImages.add(R.drawable.festival2);
+        ArrayList<Integer> foodImages = new ArrayList<>();
+        foodImages.add(R.drawable.food1);
+        foodImages.add(R.drawable.food2);
+        foodImages.add(R.drawable.food3);
+        ArrayList<Integer> hackathonImages = new ArrayList<>();
+        hackathonImages.add(R.drawable.hackathon1);
+        hackathonImages.add(R.drawable.hackathon2);
+        ArrayList<Integer> networkingImages = new ArrayList<>();
+        networkingImages.add(R.drawable.networking1);
+        networkingImages.add(R.drawable.networking2);
+        ArrayList<Integer> speakerImages = new ArrayList<>();
+        speakerImages.add(R.drawable.speaker1);
+        speakerImages.add(R.drawable.speaker2);
+        mEventList.add(new Event("Concert Event", "This is an example concert event",
+                new GregorianCalendar(), "Location 1", "Host 1", 1, concertImages));
+        mEventList.add(new Event("Festival Event", "This is an example festival event",
+                new GregorianCalendar(), "Location 2", "Host 2", 2, festivalImages));
+        mEventList.add(new Event("Food Event", "This is an example food event",
+                new GregorianCalendar(), "Location 3", "Host 3", 3, foodImages));
+        mEventList.add(new Event("Hackathon Event", "This is an example hackathon event",
+                new GregorianCalendar(), "Location 4", "Host 4", 4, hackathonImages));
+        mEventList.add(new Event("Networking Event", "This is an example networking event",
+                new GregorianCalendar(), "Location 5", "Host 5", 5, networkingImages));
+        mEventList.add(new Event("Speaker Event", "This is an example speaker event",
+                new GregorianCalendar(), "Location 6", "Host 6", 6, speakerImages));
+        Event.sortByRecommendation(mEventList);
 
         mRecyclerView = findViewById(R.id.recycle_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new RecyclerAdapter(eventList);
+        mAdapter = new RecyclerAdapter(mEventList, this);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
@@ -81,13 +99,13 @@ public class ScrollingActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 if (position == 0) {
-                    Event.sortByRecommendation(eventList);
+                    Event.sortByRecommendation(mEventList);
                 } else if (position == 1) {
-                    Event.sortByDateAscending(eventList);
+                    Event.sortByDateAscending(mEventList);
                 } else {
-                    Event.sortByDateDescending(eventList);
+                    Event.sortByDateDescending(mEventList);
                 }
-                mAdapter = new RecyclerAdapter(eventList);
+                mAdapter = new RecyclerAdapter(mEventList, ScrollingActivity.this);
                 mRecyclerView.setAdapter(mAdapter);
             }
 
@@ -119,10 +137,13 @@ public class ScrollingActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    public void switchToEventPage(View view) {
+    @Override
+    public void onEventItemClick(int position) {
+        Event event = mEventList.get(position);
         Intent i = new Intent(ScrollingActivity.this, EventActivity.class);
+        i.putExtra("event_object", new Gson().toJson(event));
+        Object[] images = event.getImages().toArray();
+        i.putExtra("event_images", new Gson().toJson(images));
         startActivity(i);
     }
-
 }
