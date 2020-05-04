@@ -14,6 +14,7 @@ public class Event {
     private int eventID;
     private ArrayList<Integer> images;
     private int recommendation;
+    private String interest;
 
     public Event(String name, String description, GregorianCalendar date, String location,
                  String host, int eventID, ArrayList<Integer> images) {
@@ -31,6 +32,11 @@ public class Event {
         // for now, date is randomized (should be provided by the host when event is created)
         this.date = new GregorianCalendar();
         this.date.roll(GregorianCalendar.DAY_OF_MONTH, r.nextInt(14));
+        interest = "";
+    }
+
+    public void setInterest(String interest) {
+        this.interest = interest;
     }
 
     public String getName() {
@@ -108,6 +114,4 @@ public class Event {
             events.set(max, temp);
         }
     }
-
-
 }
