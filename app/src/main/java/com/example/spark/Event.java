@@ -1,13 +1,13 @@
 package com.example.spark;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.Random;
+import java.util.Date;
 
 public class Event {
     private String name;
     private String description;
-    private GregorianCalendar date;
+    private Date date;
     private String location;
     private String host;
     private ArrayList<String> tags;
@@ -16,7 +16,7 @@ public class Event {
     private int recommendation;
     private String interest;
 
-    public Event(String name, String description, GregorianCalendar date, String location,
+    public Event(String name, String description, Date date, String location,
                  String host, int eventID, ArrayList<Integer> images) {
         this.name = name;
         this.description = description;
@@ -30,8 +30,7 @@ public class Event {
         Random r = new Random();
         recommendation = r.nextInt(10);
         // for now, date is randomized (should be provided by the host when event is created)
-        this.date = new GregorianCalendar();
-        this.date.roll(GregorianCalendar.DAY_OF_MONTH, r.nextInt(14));
+        this.date = date;
         interest = "";
     }
 
@@ -47,7 +46,7 @@ public class Event {
         return description;
     }
 
-    public GregorianCalendar getDate() {
+    public Date getDate() {
         return date;
     }
 

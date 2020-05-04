@@ -1,9 +1,13 @@
 package com.example.spark;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.TextView;
@@ -18,6 +22,9 @@ public class CalendarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         CalendarView calendar = findViewById(R.id.myCalendar);
         final TextView todayDate = findViewById(R.id.todayDate);
         final TextView todayEvents = findViewById(R.id.eventNames);
@@ -49,5 +56,28 @@ public class CalendarActivity extends AppCompatActivity {
         Random rand = new Random();
         int len = list.length;
         return list[rand.nextInt(len)];
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_scrolling, menu);
+        menu.findItem(R.id.calendar_view).setVisible(false);
+        menu.findItem(R.id.backButton).setVisible(false);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.list_view:
+                Intent list = new Intent(CalendarActivity.this, ScrollingActivity.class);
+                startActivity(list);
+                return (true);
+            case R.id.logout:
+                Intent login = new Intent(CalendarActivity.this, LoginActivity.class);
+                startActivity(login);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -5,26 +5,10 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    tools:context=".EventActivity">
+    <include layout="@layout/spark_toolbar"/>
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:title="Spark"
-        app:layout_collapseMode="pin"
-        app:popupTheme="@style/AppTheme.PopupOverlay">
-
-        <ImageButton
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:background="?attr/actionModeCloseDrawable"
-            android:clickable="true"
-            app:srcCompat="?attr/actionModeCloseDrawable" />
-    </androidx.appcompat.widget.Toolbar>
-
+    <!-- Event title -->
     <TextView
         android:id="@+id/testEvent"
         android:layout_width="match_parent"
@@ -34,6 +18,7 @@
         android:text="Example"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2" />
 
+    <!-- Image slideshow -->
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/eventImagePager"
         android:layout_width="match_parent"
@@ -41,6 +26,8 @@
         android:layout_weight="5"
         android:background="@color/design_default_color_on_secondary"
         app:layout_anchorGravity="center"></androidx.viewpager.widget.ViewPager>
+
+    <!-- All event description content -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -73,6 +60,7 @@
             android:paddingBottom="5dp"
             android:visibility="visible"
             tools:visibility="visible">
+
             <!--Event Information-->
             <TextView
                 android:id="@+id/eventInfo"
@@ -115,9 +103,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="true"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
                     app:backgroundTint="@color/colorPrimary"
                     app:fabCustomSize="32dp"
                     app:srcCompat="@android:drawable/sym_action_email" />
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/floatingActionButton4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:fabCustomSize="32dp"
+                    app:srcCompat="@android:drawable/ic_menu_share" />
             </LinearLayout>
 
         </LinearLayout>
@@ -133,7 +131,7 @@
         android:text="Ratings and Reviews"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
-    <!-- Rating start -->
+    <!-- Rating stars -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="0dp"
@@ -175,12 +173,11 @@
             android:background="@android:drawable/btn_star"
             android:visibility="visible" />
     </LinearLayout>
+
+    <!-- Example Review -->
     <include layout="@layout/review_layout"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="3"
         />
-
-
-
 </LinearLayout>

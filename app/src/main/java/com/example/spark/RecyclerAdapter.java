@@ -10,13 +10,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     private ArrayList<Event> mEventList;
     private OnEventItemListener mOnEventItemListener;
+    static final String DAY_PATTERN = "LL/dd/yy";
 
     public RecyclerAdapter(ArrayList<Event> eventList, OnEventItemListener onEventItemListener) {
         mEventList = eventList;
@@ -38,8 +42,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.mImageView.setImageResource(currentItem.getImages().get(0));
         holder.mNameTextView.setText(currentItem.getName());
         holder.mDescTextView.setText(currentItem.getDescription());
-        GregorianCalendar date = currentItem.getDate();
-        String dateString = date.get(Calendar.MONTH) + 1 + "/" + date.get(Calendar.DAY_OF_MONTH) + "/" + date.get(Calendar.YEAR);
+        Date date = currentItem.getDate();
+        DateFormat df = new SimpleDateFormat(DAY_PATTERN);
+        String dateString = df.format(date);
         holder.mDateTextView.setText(dateString);
     }
 

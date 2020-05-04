@@ -1,26 +1,26 @@
 package com.example.spark;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.gson.Gson;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
-public class EventActivity extends Activity {
+public class EventActivity extends AppCompatActivity {
     private ViewPager imageViewPager;
     private String INFO_PATTERN = "Date: %s\nTime: %s\nLocation: %s\nHost: %s";
     static final String DAY_PATTERN = "LL/dd/yy";
@@ -29,6 +29,8 @@ public class EventActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.event_page);
+
         String jsonEventItem = "";
         String jsonEventImages = "";
         Bundle extras = getIntent().getExtras();
@@ -45,20 +47,13 @@ public class EventActivity extends Activity {
         descriptionEvent.setText(mEvent.getDescription());
         DateFormat df = new SimpleDateFormat(DAY_PATTERN);
         DateFormat tf = new SimpleDateFormat(TIME_PATTERN);
-        Date date = mEvent.getDate().getTime();
+        Date date = mEvent.getDate();
         TextView infoEvent = findViewById(R.id.eventInfo);
         infoEvent.setText(String.format(INFO_PATTERN, df.format(date), tf.format(date),
                 mEvent.getLocation(), mEvent.getHost()));
         imageViewPager = findViewById(R.id.eventImagePager);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this, eventImages);
         imageViewPager.setAdapter(viewPagerAdapter);
-        ImageButton backBtn = findViewById(R.id.backButton);
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent(EventActivity.this, ScrollingActivity.class);
-                startActivity(i);
-            }
-        });
 
         // Dropdown for interest
         Spinner interestSpinner = findViewById(R.id.interest);
@@ -83,5 +78,35 @@ public class EventActivity extends Activity {
                 // your code here
             }
         });
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_scrolling, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.list_view:
+            case R.id.backButton:
+                Intent list = new Intent(EventActivity.this, ScrollingActivity.class);
+                startActivity(list);
+                return (true);
+            case R.id.logout:
+                Intent login = new Intent(EventActivity.this, LoginActivity.class);
+                startActivity(login);
+                return (true);
+            case R.id.calendar_view:
+                Intent cal = new Intent(EventActivity.this, CalendarActivity.class);
+                startActivity(cal);
+                return(true);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

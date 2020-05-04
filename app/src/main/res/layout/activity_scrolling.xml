@@ -10,24 +10,19 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:orientation="vertical">
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            android:title="Spark"
-            app:layout_collapseMode="pin"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+        <include layout="@layout/spark_toolbar"/>
 
-            <SearchView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </androidx.appcompat.widget.Toolbar>
+        <SearchView
+            android:id="@+id/searchview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="4"
             android:background="@color/design_default_color_on_secondary"
             app:layout_anchorGravity="center">
 
@@ -42,7 +37,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="5"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context=".ScrollingActivity"
             tools:showIn="@layout/activity_scrolling">

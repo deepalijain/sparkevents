@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".CalendarActivity">
 
+    <include layout="@layout/spark_toolbar"
+        app:layout_constraintTop_toTopOf="parent"/>
     <CalendarView
         android:id="@+id/myCalendar"
         android:layout_width="wrap_content"

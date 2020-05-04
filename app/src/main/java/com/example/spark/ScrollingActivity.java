@@ -3,8 +3,6 @@ package com.example.spark;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,16 +11,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.util.Log;
+import android.view.SearchEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.SearchView;
 import android.widget.Spinner;
 
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class ScrollingActivity extends AppCompatActivity implements RecyclerAdapter.OnEventItemListener {
@@ -39,7 +38,6 @@ public class ScrollingActivity extends AppCompatActivity implements RecyclerAdap
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // code Included
         viewPager = (ViewPager)findViewById(R.id.viewPager);
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this);
@@ -68,18 +66,25 @@ public class ScrollingActivity extends AppCompatActivity implements RecyclerAdap
         ArrayList<Integer> speakerImages = new ArrayList<>();
         speakerImages.add(R.drawable.speaker1);
         speakerImages.add(R.drawable.speaker2);
-        mEventList.add(new Event("Concert Event", "This is an example concert event",
-                new GregorianCalendar(), "Location 1", "Host 1", 1, concertImages));
-        mEventList.add(new Event("Festival Event", "This is an example festival event",
-                new GregorianCalendar(), "Location 2", "Host 2", 2, festivalImages));
-        mEventList.add(new Event("Food Event", "This is an example food event",
-                new GregorianCalendar(), "Location 3", "Host 3", 3, foodImages));
-        mEventList.add(new Event("Hackathon Event", "This is an example hackathon event",
-                new GregorianCalendar(), "Location 4", "Host 4", 4, hackathonImages));
-        mEventList.add(new Event("Networking Event", "This is an example networking event",
-                new GregorianCalendar(), "Location 5", "Host 5", 5, networkingImages));
-        mEventList.add(new Event("Speaker Event", "This is an example speaker event",
-                new GregorianCalendar(), "Location 6", "Host 6", 6, speakerImages));
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.set(2020, 4, 20, 20, 00);
+        mEventList.add(new Event("Concert", "Come enjoy some music, open to all UC Berkeley students.",
+                cal.getTime(), "Greek Theatre", "Band", 1, concertImages));
+        cal.set(2020, 5, 1, 13, 00);
+        mEventList.add(new Event("Music Festival", "Come celebrate diverse music at the annual music festival.",
+                cal.getTime(), "Telegraph Ave.", "Berkeley", 2, festivalImages));
+        cal.set(2020, 4, 13, 20, 00);
+        mEventList.add(new Event("Night Market", "Enjoy some food at the Night Market.",
+                cal.getTime(), "Lower Sproul", "Clubs", 3, foodImages));
+        cal.set(2020, 4, 6, 9, 00);
+        mEventList.add(new Event("Hackathon", "Registration is open to all students! Join for a weekend of workshops, collaboration, and hacking!",
+                cal.getTime(), "Cory Hall", "Hack Club", 4, hackathonImages));
+        cal.set(2020, 4, 8, 20, 00);
+        mEventList.add(new Event("Networking", "Come to this networking event for a chance to talk to recruiters of numerous companies.",
+                cal.getTime(), "Barrows Hall", "Berkeley", 5, networkingImages));
+        cal.set(2020, 4, 15, 18, 00);
+        mEventList.add(new Event("Guest Speaker", "This is an example speaker event",
+                cal.getTime(), "Zellerbach", "Speaker", 6, speakerImages));
         Event.sortByRecommendation(mEventList);
 
         mRecyclerView = findViewById(R.id.recycle_view);
@@ -121,22 +126,25 @@ public class ScrollingActivity extends AppCompatActivity implements RecyclerAdap
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_scrolling, menu);
+        menu.findItem(R.id.list_view).setVisible(false);
+        menu.findItem(R.id.backButton).setVisible(false);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(item.getItemId()) {
+            case R.id.calendar_view:
+                Intent list = new Intent(ScrollingActivity.this, CalendarActivity.class);
+                startActivity(list);
+                return (true);
+            case R.id.logout:
+                Intent login = new Intent(ScrollingActivity.this, LoginActivity.class);
+                startActivity(login);
         }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void onEventItemClick(int position) {
         Event event = mEventList.get(position);
