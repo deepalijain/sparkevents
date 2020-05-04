@@ -1,0 +1,53 @@
+package com.example.spark;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.CalendarView;
+import android.widget.TextView;
+
+import java.time.Month;
+
+import java.util.Random;
+
+public class CalendarActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_calendar);
+        CalendarView calendar = findViewById(R.id.myCalendar);
+        final TextView todayDate = findViewById(R.id.todayDate);
+        final TextView todayEvents = findViewById(R.id.eventNames);
+        calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                //Date d = new GregorianCalendar(year, month, dayOfMonth);
+                todayDate.setVisibility(View.VISIBLE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    todayDate.setText(Month.of(month + 1).name().substring(0,3) + " " + dayOfMonth + ", " + year);
+                }
+                String[] events = new String[]{"Infosession  6:00PM   Soda Hall\n",
+                                                "Food Event  6:00PM   MLK\n",
+                                                "Festivals   9:00PM   Greek Theater\n",
+                                                "Hackathon   9:00AM   Cory Hall\n",
+                                                "Networking  8:00PM   Barrows Hall\n"};
+
+                String e = getRandomElement(events);
+                e += getRandomElement(events);
+                todayEvents.setVisibility(View.VISIBLE);
+                todayEvents.setText(e);
+
+            }
+        });
+
+    }
+
+    public String getRandomElement(String[] list)
+    {
+        Random rand = new Random();
+        int len = list.length;
+        return list[rand.nextInt(len)];
+    }
+}
